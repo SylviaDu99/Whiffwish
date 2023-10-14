@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj": {}
+    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj": {
+    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj",
+        "projectPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj",
         "packagesPath": "C:\\Users\\gaosk\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\obj\\",
+        "outputPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gaosk\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -39,6 +39,16 @@
           "targetAlias": "net7.0",
           "dependencies": {
             "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[7.0.12, )"
             },
