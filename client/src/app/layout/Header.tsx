@@ -5,10 +5,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 export default function Header() {
     return (
-        <AppBar position='static' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>
+        <AppBar position='fixed' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>
             <Toolbar>
                 {/* Logo on the left */}
-                <Typography variant='h6' color="primary" sx={{ marginRight: 6 }}>
+                <Typography variant='h6' color="primary" sx={{ marginRight: 2 }}>
                     Whiffwish
                 </Typography>
 

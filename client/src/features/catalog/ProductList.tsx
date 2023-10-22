@@ -7,24 +7,26 @@ interface Props {
 }
 
 export default function ProductList({ products }: Props) {
-    const columns: Product[][] = [[], [], [], []];
+    const columns: Product[][] = [[], [], [], [], []];
     products.forEach((product, index) => {
-        columns[index % 4].push(product);
+        columns[index % 5].push(product);
     });
 
     return (
-        <Grid container spacing={4}>
-            {columns.map((columnProducts, colIndex) => (
-                <Grid item xs={3} key={colIndex}>
-                    <Box display="flex" flexDirection="column">
-                        {columnProducts.map((product) => (
-                            <Box marginBottom={4} key={product.id}>
-                                <ProductCard product={product} />
-                            </Box>
-                        ))}
-                    </Box>
-                </Grid>
-            ))}
-        </Grid>
+        <Box marginTop={10} marginLeft={20} marginRight={-10}>
+            <Grid container spacing={3}>
+                {columns.map((columnProducts, colIndex) => (
+                    <Grid item xs={2.3} key={colIndex}>
+                        <Box display="flex" flexDirection="column">
+                            {columnProducts.map((product) => (
+                                <Box marginBottom={4} key={product.id}>
+                                    <ProductCard product={product} />
+                                </Box>
+                            ))}
+                        </Box>
+                    </Grid>
+                ))}
+            </Grid>
+        </Box>
     );
 }
