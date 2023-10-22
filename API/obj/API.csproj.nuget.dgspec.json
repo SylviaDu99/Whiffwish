@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj": {}
+    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj": {
+    "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj",
+        "projectUniqueName": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj",
+        "projectPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj",
         "packagesPath": "C:\\Users\\gaosk\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\obj\\",
+        "outputPath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gaosk\\AppData\\Roaming\\NuGet\\NuGet.Config"
