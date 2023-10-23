@@ -1,6 +1,9 @@
+import Gallery from '../../features/catalog/Gallery';
 import Catalog from '../../features/catalog/Catalog';
 import Header from './Header';
 import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Outlet } from 'react-router-dom';
 
 const theme = createTheme({
   palette: {
@@ -9,7 +12,7 @@ const theme = createTheme({
       light: '#FEF9EE',
     },
     secondary: {
-      main: '#000000',
+      main: '#555555',
     },
   },
 });
@@ -19,9 +22,9 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header />
-      <Container>
-        <Catalog />
-      </Container>
+      
+        <Outlet />
+      
     </ThemeProvider>
   )
 }

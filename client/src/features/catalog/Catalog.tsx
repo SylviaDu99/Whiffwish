@@ -1,4 +1,6 @@
+import { Container } from "react-bootstrap";
 import { Product } from "../../app/models/product"
+import Gallery from "./Gallery";
 import ProductList from "./ProductList"
 import { useState, useEffect } from "react"
 
@@ -13,7 +15,10 @@ export default function Catalog() {
   
     return (
         <>
-            <ProductList products={products}/>
+            <Gallery />
+            
+                <ProductList products={products}/>
+        
         </>
     )
 }

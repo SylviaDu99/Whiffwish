@@ -13,13 +13,13 @@ export default function ProductList({ products }: Props) {
     });
 
     return (
-        <Box marginTop={10} marginLeft={20} marginRight={-10}>
+        <Box marginTop={10} marginLeft={30} >
             <Grid container spacing={3}>
                 {columns.map((columnProducts, colIndex) => (
                     <Grid item xs={2.3} key={colIndex}>
                         <Box display="flex" flexDirection="column">
                             {columnProducts.map((product) => (
-                                <Box marginBottom={4} key={product.id}>
+                                <Box marginBottom={2} key={product.id}>
                                     <ProductCard product={product} />
                                 </Box>
                             ))}

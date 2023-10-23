@@ -10,4 +10,5 @@ export interface Product {
     rating?: number;
     numReviews?: number;
     sellerId?: number;
+    tag?: string[];
 }
