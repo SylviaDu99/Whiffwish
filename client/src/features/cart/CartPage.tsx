@@ -1,7 +1,11 @@
 import { Typography } from "@mui/material";
+import Header from "../../app/layout/Header";
 
 export default function CartPage() {    
     return (
-        <Typography> Cart Page </Typography>
+        <>
+            <Header />
+            <Typography> Cart Page </Typography>
+        </>
     )
 }

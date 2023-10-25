@@ -35,7 +35,7 @@ export default function Header() {
                 </Box>
 
                 {/* Icons + Login button on the right */}
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box display =  'flex' alignItems = 'center' >
                     <IconButton 
                         edge="end" 
                         color="secondary" 

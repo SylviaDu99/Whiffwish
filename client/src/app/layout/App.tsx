@@ -21,10 +21,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
       
-        <Outlet />
-      
+      <Outlet />
     </ThemeProvider>
   )
 }

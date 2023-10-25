@@ -1,7 +1,12 @@
 import { Typography } from "@mui/material";
+import Header from "../../app/layout/Header";
 
 export default function FavoritePage() {    
     return (
-        <Typography> Favorite Page </Typography>
+        <>
+            <Header />
+            <Typography> Favorite Page </Typography>
+        </>
+        
     )
 }

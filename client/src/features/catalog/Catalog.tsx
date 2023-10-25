@@ -3,6 +3,7 @@ import { Product } from "../../app/models/product"
 import Gallery from "./Gallery";
 import ProductList from "./ProductList"
 import { useState, useEffect } from "react"
+import Header from "../../app/layout/Header";
 
 export default function Catalog() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -15,9 +16,10 @@ export default function Catalog() {
   
     return (
         <>
+            <Header />
             <Gallery />
             
-                <ProductList products={products}/>
+            <ProductList products={products}/>
         
         </>
     )
