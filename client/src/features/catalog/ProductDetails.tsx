@@ -1,8 +1,11 @@
-import { Backdrop, Box, Grid, Typography, IconButton, Divider, Avatar, CardHeader } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
+import { Backdrop, Box, Grid, Typography, IconButton, Divider, Avatar, CardHeader, Button, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close'; 
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import SendIcon from '@mui/icons-material/Send';
+import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useParams, useNavigate } from 'react-router-dom'; 
 import { Product } from '../../app/models/product';
 
 export default function ProductDetails() {
@@ -48,32 +51,60 @@ export default function ProductDetails() {
                         <div style={{ flex: 1, backgroundColor: 'black' }}></div>
                     </Grid>
 
-                    <Grid item xs={5} padding={3}>
-                        <CardHeader 
-                            sx={{padding: '0', marginBottom: '1rem'}}
-                            avatar={
-                                <Avatar sx={{ width: '32px', height: '32px', fontSize: '1rem' }}>
-                                    {product.sellerId ? product.sellerId.toString().charAt(0) : 'C'}
-                                </Avatar>
-                            }
-                            title={product.sellerId ? product.sellerId.toString() : 'Celia'}
-                            titleTypographyProps={{ sx: { marginLeft:-1.3,fontSize:'0.8rem',color:"black" } }}
-                         />
-                        <Typography variant='body1' color={'black'} sx={{fontWeight:'bold'}}>{product.name}</Typography>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Typography variant='h6' color={'black'} sx={{fontWeight:'bold'}}>
-                                ${(product.price/100).toFixed(2)}
-                            </Typography>
-                            <Typography variant='body2' color={'grey'}>{(product.quantityInStock >0) ? "In stock": "Out of stock"}</Typography>
-                        </Box>
-                        <Typography variant='body2' color={'black'}>
-                            {product.description}
-                        </Typography>
-                        <Divider sx={{ my: 2 }} />
+                    <Grid item xs={5} padding={3} sx={{ display: 'flex', flexDirection: 'column', height: '100%'}}>
+                        <Box sx={{ flexGrow: 1, overflowY: 'auto' }}>
+                            <CardHeader 
+                                sx={{padding: '0', marginBottom: '1rem'}}
+                                avatar={
+                                    <Avatar sx={{ width: '32px', height: '32px', fontSize: '1rem' }}>
+                                        {product.sellerId ? product.sellerId.toString().charAt(0) : 'C'}
+                                    </Avatar>
+                                }
+                                title={product.sellerId ? product.sellerId.toString() : 'Celia'}
+                                titleTypographyProps={{ sx: { marginLeft:-1.3,fontSize:'0.8rem',color:"black" } }}
+                            />
+                            <Typography variant='body1' color={'black'} sx={{fontWeight:'bold'}}>{product.name}</Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <Typography variant='h6' color={'black'} sx={{fontWeight:'bold'}}>
+                                    ${(product.price/100).toFixed(2)}
+                                </Typography>
+                                <Typography variant='body2' color={'grey'}>{(product.quantityInStock >0) ? "In stock": "Out of stock"}</Typography>
+                            </Box>
 
-                        <Grid item xs={5} color="#555555"><Typography variant="body2">0 Comments</Typography></Grid>
+                            <Typography variant='body2' color={'black'}>
+                                {product.description}
+                            </Typography>
+
+                            <Box sx={{ display: 'flex', alignItems: 'center', padding: 2, gap:4 }}>
+                                <FavoriteIcon color="primary"/>
+                                <AddShoppingCartOutlinedIcon color="primary"/>
+                            </Box>
+                            
+                            {/* Date of post */}
+                            <Grid color="black">
+                                <Typography color="grey" style={{whiteSpace: 'nowrap'}} fontSize={'0.8rem'} marginTop={1} >
+                                    Posted on: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}
+                                </Typography>
+                            </Grid>
+
+                            <Divider sx={{ my: 2 }} />
+                            <Grid color="grey"><Typography variant="body2">0 Comments</Typography></Grid>
+                        </Box>
+                        
+                        {/* Reply bar */}
+                        <Box marginRight={2}>
+                            <Grid container spacing={2} alignItems="center">
+                                <Grid item xs={11}>
+                                    <TextField fullWidth  variant="filled"  placeholder="Write a reply"/>
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <SendIcon color="primary"/>
+                                </Grid>
+                            </Grid>
+                        </Box>
+
                     </Grid>
-                    
+
                 </Grid>
                 
             </Box>
