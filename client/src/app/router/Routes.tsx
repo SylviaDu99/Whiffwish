@@ -5,17 +5,22 @@ import ProductDetails from "../../features/catalog/ProductDetails";
 import CartPage from "../../features/cart/CartPage";
 import FavoritePage from "../../features/favorite/FavoritePage";
 import HomePage from "../../features/home/HomePage";
+import ServerError from "../error/ServerError";
+import NotFound from "../error/NotFound";
 
 export const router = createBrowserRouter([
     {
         path: '/',
         element: <App />,
         children: [
-            {path: '', element: <HomePage />},
+            {path: '', element: <Catalog />},
             {path: 'catalog', element: <Catalog />},
             {path: 'product/:id', element: <ProductDetails />},
             {path: 'cart', element: <CartPage />},
             {path: 'favorite', element: <FavoritePage />},
+            {path: 'server-error', element: <ServerError />},
+            {path: 'not-found', element: <NotFound />},
+            {path: '*', element: <NotFound />}
         ]
     }
 ])
