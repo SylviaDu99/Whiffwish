@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { Product } from '../../app/models/product';
 import agent from '../../app/api/agent';
+import NotFound from '../../app/error/NotFound';
+import LoadingComponent from '../../app/layout/LoadingComponent';
 
 export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
@@ -21,8 +23,8 @@ export default function ProductDetails() {
             .finally(() => setLoading(false));
     }, [id]);
 
-    if (loading) return <Typography> Loading... </Typography>
-    if (!product) return <Typography> Product not found </Typography>
+    if (loading) return <LoadingComponent message='Fetching the post...'/>
+    if (!product) return <NotFound />
 
     return (
         <Backdrop open={true} style={{ zIndex: 1, color: '#dddddd', backgroundColor: 'rgba(0,0,0,0.02)' }}>
