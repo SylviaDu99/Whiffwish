@@ -1,12 +1,12 @@
-import { Backdrop, Box, Grid, Typography, IconButton, Divider, Avatar, CardHeader, Button, TextField } from '@mui/material';
+import { Backdrop, Box, Grid, Typography, IconButton, Divider, Avatar, CardHeader, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SendIcon from '@mui/icons-material/Send';
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { Product } from '../../app/models/product';
+import agent from '../../app/api/agent';
 
 export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
@@ -15,8 +15,8 @@ export default function ProductDetails() {
     const navigate = useNavigate(); // Get the navigate function
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/products/${id}`)
-            .then(response => setProduct(response.data))
+        id && agent.Catalog.details(parseInt(id))
+            .then(response => setProduct(response))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
     }, [id]);
