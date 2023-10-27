@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, InputBase, Button, IconButton, Box, List, ListItem, Badge } from "@mui/material";
+import { AppBar, Toolbar, Typography, InputBase, Button, IconButton, Box, Badge } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';

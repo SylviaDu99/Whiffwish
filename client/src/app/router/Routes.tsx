@@ -4,7 +4,6 @@ import App from "../layout/App";
 import ProductDetails from "../../features/catalog/ProductDetails";
 import CartPage from "../../features/cart/CartPage";
 import FavoritePage from "../../features/favorite/FavoritePage";
-import HomePage from "../../features/home/HomePage";
 import ServerError from "../error/ServerError";
 import NotFound from "../error/NotFound";
 

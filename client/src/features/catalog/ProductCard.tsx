@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, IconButton, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, CardHeader, CardMedia, Grid, IconButton, Typography } from "@mui/material";
 import { Product } from "../../app/models/product";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
