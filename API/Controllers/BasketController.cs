@@ -24,8 +24,6 @@ namespace API.Controllers {
             return MapBasketToDto(basket);
         }
 
-
-
         [HttpPost]
         public async Task<ActionResult<BasketDto>> AddItemToBasket(int productId, int quantity) {
             // get the basket || create basket
@@ -50,10 +48,10 @@ namespace API.Controllers {
             if (basket == null) return NotFound();
             basket.RemoveItem(productId, quantity);
             var result = await _context.SaveChangesAsync() > 0;
-            if (result )return Ok();
+            if (result)return Ok();
             return BadRequest(new ProblemDetails{Title = "Problem removing item from basket"});
         }
-
+        
         private BasketDto MapBasketToDto(Basket basket)
         {
             return new BasketDto

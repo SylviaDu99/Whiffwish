@@ -3,8 +3,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { NavLink } from "react-router-dom";
+import { useStoreContext } from "../context/StoreContext";
 
 export default function Header() {
+    const {basket} = useStoreContext();
+    const itemCount = basket?.items.reduce((acc, item) => acc + item.quantity, 0);
     return (
         <AppBar position='fixed' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>
             <Toolbar>
@@ -53,7 +56,7 @@ export default function Header() {
                         component={NavLink} 
                         to={"/cart"}
                     >
-                        <Badge badgeContent={4} color="primary">
+                        <Badge badgeContent={itemCount} color="primary">
                             <ShoppingCartIcon sx={{ fontSize: '1.2rem'}}/>
                         </Badge>
                     </IconButton>

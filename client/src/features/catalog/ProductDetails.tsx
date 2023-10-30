@@ -1,27 +1,56 @@
-import { Backdrop, Box, Grid, Typography, IconButton, Divider, Avatar, CardHeader, TextField } from '@mui/material';
+import { Backdrop, Box, Grid, Typography, IconButton, Divider, Avatar, CardHeader, TextField, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; 
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import SendIcon from '@mui/icons-material/Send';
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
 import { Product } from '../../app/models/product';
 import agent from '../../app/api/agent';
 import NotFound from '../../app/error/NotFound';
 import LoadingComponent from '../../app/layout/LoadingComponent';
+import { useStoreContext } from '../../app/context/StoreContext';
+import { LoadingButton } from '@mui/lab';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function ProductDetails() {
+    const {basket, setBasket, removeItem} = useStoreContext();
     const { id } = useParams<{ id: string }>();
     const [product, setProduct] = useState<Product | null>(null);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate(); // Get the navigate function
-
+    const [quantity, setQuantity] = useState(0); // Default quantity is 1
+    const [submitting, setSubmitting] = useState(false); // Default submitting is false
+    const item = basket?.items.find(item => item.productId === product?.id);
+    
     useEffect(() => {
+        if (item) setQuantity(item.quantity);
         id && agent.Catalog.details(parseInt(id))
             .then(response => setProduct(response))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
-    }, [id]);
+    }, [id, item]);
+    
+    function handleQuantityChange(event: any) {
+        if (event.target.value <= 0) return;
+        setQuantity(event.target.value);
+    }
+
+    function handleUpdateCart() {
+        if (!product) return;
+        setSubmitting(true);
+        if (!item || quantity > item.quantity) {
+            const undatedQuantity = item ? quantity - item.quantity : quantity;
+            agent.Basket.addItem(product.id!, undatedQuantity)
+                .then(basket => setBasket(basket))
+                .catch(error => console.log(error))
+                .finally(() => setSubmitting(false));
+        } else {
+            const updatedQuantity = item.quantity - quantity;
+            agent.Basket.removeItem(product.id!, item.quantity - quantity)
+                .then(() => removeItem(product.id!, updatedQuantity))
+                .catch(error => console.log(error))
+                .finally(() => setSubmitting(false));
+        }
+    }
 
     if (loading) return <LoadingComponent message='Fetching the post...'/>
     if (!product) return <NotFound />
@@ -77,19 +106,56 @@ export default function ProductDetails() {
                                 {product.description}
                             </Typography>
 
-                            <Box sx={{ display: 'flex', alignItems: 'center', padding: 2, gap:4 }}>
-                                <FavoriteIcon color="primary"/>
-                                <AddShoppingCartOutlinedIcon color="primary"/>
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, marginTop: 3 }}>
+                                <Button size="small" sx = {{backgroundColor: "#e2e2e2", color: "black"}}>Tag 1</Button>
+                                <Button size="small" sx = {{backgroundColor: "#e2e2e2",color: "black"}}>Tag 2</Button>
+                                <Button size="small"  sx = {{backgroundColor: "#e2e2e2",color: "black"}}>Tag 3</Button>
+                                {/* Add more tags as needed */}
                             </Box>
+
+                            <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 3, gap: 1 }}>
+                                <TextField
+                                    onChange={handleQuantityChange}
+                                    fullWidth 
+                                    type = "number"
+                                    value = {quantity}
+                                    label = "Quantity in Cart"
+                                    sx={{ width: '50%', 
+                                        '& .MuiInputBase-root': {
+                                            height: '35px',
+                                            alignItems: 'center'
+                                        } }} />
+                                <LoadingButton 
+                                    disabled={quantity === item?.quantity || !item && quantity === 0}
+                                    loading={submitting}
+                                    onClick={handleUpdateCart}
+                                    variant="contained" 
+                                    color="primary" 
+                                    fullWidth 
+                                    sx={{ width: '50%', height: '35px', boxShadow: 'none' }}>
+                                    {item ? 'Update Cart' : 'Add to Cart'}
+                                </LoadingButton>
+                            </Box>
+
+                            <Box sx={{ display: 'flex', alignItems: 'center', marginTop:2, gap: 1 }}>
+                                <Button 
+                                    variant="contained" 
+                                    sx={{height: '35px', backgroundColor:"#e2e2e2", flexGrow: 1, boxShadow: 'none'}}
+                                    startIcon={<FavoriteBorderIcon />}
+                                >
+                                    Add to Favorites
+                                </Button>
+                            </Box>
+
                             
                             {/* Date of post */}
-                            <Grid color="black">
+                            <Grid>
                                 <Typography color="grey" style={{whiteSpace: 'nowrap'}} fontSize={'0.8rem'} marginTop={1} >
                                     Posted on: {new Date().toLocaleDateString()} {new Date().toLocaleTimeString()}
                                 </Typography>
                             </Grid>
 
-                            <Divider sx={{ my: 2 }} />
+                            <Divider sx={{ my: 2}} />
                             <Grid color="grey"><Typography variant="body2">0 Comments</Typography></Grid>
                         </Box>
                         
@@ -97,7 +163,13 @@ export default function ProductDetails() {
                         <Box marginRight={2}>
                             <Grid container spacing={2} alignItems="center">
                                 <Grid item xs={11}>
-                                    <TextField fullWidth  variant="filled"  placeholder="Write a reply"/>
+                                    <TextField 
+                                        fullWidth  
+                                        sx = {{'& .MuiInputBase-root': {
+                                            height: '35px',
+                                            alignItems: 'center'
+                                        }}} 
+                                    />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <SendIcon color="primary"/>

@@ -5,6 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import agent from "../../app/api/agent";
+import { useStoreContext } from "../../app/context/StoreContext";
 
 interface Props {
     product: Product;
@@ -14,10 +15,12 @@ export default function ProductCard({product}: Props) {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [isLoading, setLoading] = useState(false);
+    const {setBasket} = useStoreContext();
 
     function handleAddToCart(productId: number) {
         setLoading(true);
         agent.Basket.addItem(productId)
+            .then(basket => setBasket(basket))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
     }
@@ -69,7 +72,6 @@ export default function ProductCard({product}: Props) {
                             sx={{ padding: '0.5rem'}} 
                             onClick={() => handleAddToCart(product.id)}>
                             {isLoading ? <CircularProgress size={24} /> : <ShoppingCartIcon color='primary' sx={{ fontSize: '1rem'}} />}
-                            
                         </IconButton>
                         </Grid>
                     </Grid>

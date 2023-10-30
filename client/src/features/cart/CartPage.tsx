@@ -1,67 +1,132 @@
-import { Container, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { Basket } from "../../app/models/basket";
-import agent from "../../app/api/agent";
-import LoadingComponent from "../../app/layout/LoadingComponent";
-import { Delete, Padding } from "@mui/icons-material";
+import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, } from "@mui/material";
+import { Add, Delete, Remove } from "@mui/icons-material";
 import Header from "../../app/layout/Header";
+import { useStoreContext } from "../../app/context/StoreContext";
+import agent from "../../app/api/agent";
+import { useState } from "react";
+import LoadingButton from '@mui/lab/LoadingButton';
 
-export default function CartPage() {    
-    const [loading, setLoading] = useState(false);
-    const [basket, setBasket] = useState<Basket | null>(null);
+export default function CartPage() {
+    const { basket, setBasket, removeItem } = useStoreContext();
+    const [status, setStatus] = useState({
+        loading: false,
+        name: ''
+    });
+    const deliveryFee = 999; //Todo: get from backend
 
-    useEffect(() => {
-        setLoading(true);
-        agent.Basket.get()
-            .then(response => setBasket(response))
+
+    function handleAddItem(productId: number, name: string) {
+        setStatus({ loading: true, name: name })
+        agent.Basket.addItem(productId)
+            .then(basket => setBasket(basket))
             .catch(error => console.log(error))
-            .finally(() => setLoading(false));
-    }, []);
+            .finally(() => setStatus({ loading: false, name: '' }));
+    }
 
-    if (loading) return <LoadingComponent message="Loading cart..." />
-    if (!basket) return <Typography>Cart is empty</Typography>
-    return (
+    function handleRemoveItem(productId: number, quantity = 1, name: string) {
+        setStatus({ loading: true, name: name });
+        agent.Basket.removeItem(productId, quantity)
+            .then(() => removeItem(productId, quantity))
+            .catch(error => console.log(error))
+            .finally(() => setStatus({ loading: false, name: '' }));
+    }
+
+
+    if (!basket || basket.items.length === 0) return (
         <>
-        <Header />
-        <div style={{ height: '68px' }}></div>
-        <Container>
-            <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} >
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="right">Image</TableCell>
-                            <TableCell>Product</TableCell>
-                            <TableCell align="right">Price</TableCell>
-                            <TableCell align="right">Quantity</TableCell>
-                            <TableCell align="right">Subtotal</TableCell>
-                            <TableCell align="right"></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {basket.items.map(item => (
-                            <TableRow
-                                key={item.productId}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                            >
-                                {/* todo: image */}
-                                <TableCell align="right"></TableCell>
-                                <TableCell component="th" scope="row">
-                                    {item.name}
-                                </TableCell>
-                                <TableCell align="right">${(item.price / 100).toFixed(2)}</TableCell>
-                                <TableCell align="right">{item.quantity}</TableCell>
-                                <TableCell align="right">${(item.price * item.quantity / 100).toFixed(2)}</TableCell>
-                                <TableCell align="right">
-                                    <IconButton>
-                                        <Delete />
-                                    </IconButton>
+            <Header />
+            <div style={{ height: '68px' }}></div>
+            <Container>
+                <TableContainer component={Paper} sx = {{boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.05)"}}>
+                    <Table sx={{ minWidth: 650 }} >
+                        <TableBody>
+                        {
+                            <TableRow>
+                                <TableCell component="th" scope="row" sx={{ borderBottom: 'none' }}>
+                                    Your cart is currently empty.
                                 </TableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Container>
+                        }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
+        </>
+    )
+
+    const totalPrice = basket.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+    return (
+        <>
+            <Header />
+            <div style={{ height: '68px' }}></div>
+            <Container>
+                <TableContainer component={Paper} sx = {{boxShadow: "0px 3px 10px rgba(0, 0, 0, 0.05)"}}>
+                    <Table sx={{ minWidth: 650 }} >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="center">Image</TableCell>
+                                <TableCell align="center">Product</TableCell>
+                                <TableCell align="center">Price</TableCell>
+                                <TableCell align="center">Quantity</TableCell>
+                                <TableCell align="center">Subtotal</TableCell>
+                                <TableCell align="center"></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {basket.items.map(item => (
+                                <TableRow
+                                    key={item.productId}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                >
+                                    <TableCell align="center">
+                                        <img src={item.pictureUrl} alt={item.name} style={{ height: "100px", width: "100px" }} />
+                                    </TableCell>
+                                    <TableCell align="center" component="th" scope="row">
+                                        {item.name}
+                                    </TableCell>
+                                    <TableCell align="center">${(item.price / 100).toFixed(2)}</TableCell>
+                                    <TableCell align="center">
+                                        <LoadingButton
+                                            loading={status.loading && status.name === 'rem' + item.productId}
+                                            onClick={() => handleRemoveItem(item.productId, 1, 'rem' + item.productId)}>
+                                            <Remove />
+                                        </LoadingButton>
+                                        {item.quantity}
+                                        <LoadingButton
+                                            loading={status.loading && status.name === 'add' + item.productId}
+                                            onClick={() => handleAddItem(item.productId, 'add' + item.productId)}>
+                                            <Add />
+                                        </LoadingButton>
+                                    </TableCell>
+                                    <TableCell align="center">${(item.price * item.quantity / 100).toFixed(2)}</TableCell>
+                                    <TableCell align="center">
+                                        <LoadingButton
+                                            loading={status.loading && status.name === 'del' + item.productId}
+                                            onClick={() => handleRemoveItem(item.productId, item.quantity, 'del' + item.productId)}
+                                        >
+                                            <Delete />
+                                        </LoadingButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            <TableRow>
+                                <TableCell colSpan={5} align="right"><Typography variant="subtitle2">Subtotal: </Typography></TableCell>
+                                <TableCell align="right"><Typography variant="subtitle2">${(totalPrice / 100).toFixed(2)}</Typography></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell colSpan={5} align="right"><Typography variant="subtitle2">Shipping fee: </Typography></TableCell>
+                                <TableCell align="right"><Typography variant="subtitle2">${(deliveryFee / 100).toFixed(2)}</Typography></TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell colSpan={5} align="right"><Typography variant="subtitle2">Total: </Typography></TableCell>
+                                <TableCell align="right"><Typography variant="subtitle2">${((totalPrice + deliveryFee) / 100).toFixed(2)}</Typography></TableCell>
+                            </TableRow>
+                            
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Container>
         </>
     )
 }
