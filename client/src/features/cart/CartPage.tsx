@@ -1,10 +1,11 @@
-import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, } from "@mui/material";
+import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, } from "@mui/material";
 import { Add, Delete, Remove } from "@mui/icons-material";
 import Header from "../../app/layout/Header";
 import { useStoreContext } from "../../app/context/StoreContext";
 import agent from "../../app/api/agent";
 import { useState } from "react";
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Link } from "react-router-dom";
 
 export default function CartPage() {
     const { basket, setBasket, removeItem } = useStoreContext();
@@ -110,6 +111,8 @@ export default function CartPage() {
                                     </TableCell>
                                 </TableRow>
                             ))}
+
+                            {/* Subtotal */}
                             <TableRow>
                                 <TableCell colSpan={5} align="right"><Typography variant="subtitle2">Subtotal: </Typography></TableCell>
                                 <TableCell align="right"><Typography variant="subtitle2">${(totalPrice / 100).toFixed(2)}</Typography></TableCell>
@@ -122,7 +125,22 @@ export default function CartPage() {
                                 <TableCell colSpan={5} align="right"><Typography variant="subtitle2">Total: </Typography></TableCell>
                                 <TableCell align="right"><Typography variant="subtitle2">${((totalPrice + deliveryFee) / 100).toFixed(2)}</Typography></TableCell>
                             </TableRow>
-                            
+
+                            {/* Checkout button */}
+                            <TableRow>
+                                <TableCell colSpan={6} align="right">
+                                    <Button 
+                                        component={Link}
+                                        to="/checkout"
+                                        variant="contained" 
+                                        color="primary" 
+                                        size="large"
+                                        sx = {{boxShadow: "0px 3px 10px rgba(0, 0, 0, 0)"}}
+                                    >
+                                        Checkout
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>

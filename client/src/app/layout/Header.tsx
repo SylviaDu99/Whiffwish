@@ -3,11 +3,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { NavLink } from "react-router-dom";
-import { useStoreContext } from "../context/StoreContext";
 
 export default function Header() {
-    const {basket} = useStoreContext();
-    const itemCount = basket?.items.reduce((acc, item) => acc + item.quantity, 0);
     return (
         <AppBar position='fixed' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>
             <Toolbar>
@@ -22,19 +19,38 @@ export default function Header() {
                 <Box sx={{ 
                     flexGrow: 1, 
                     position: 'relative', 
-                    borderRadius: '4px', 
-                    backgroundColor: 'primary.light', 
+                    borderRadius: '20px', 
+                    backgroundColor: 'rgba(244, 244, 244, 1)', 
                     display: 'flex', 
                     alignItems: 'center',
                     maxWidth: '400px',
-                    margin: '0 auto' // centers the box in the available space
+                    margin: '0 auto', // centers the box in the available space
+                    paddingTop: '4px', 
+                    paddingRight: '4px', 
+                    paddingBottom: '4px',
+                    paddingLeft: '4px'
                 }}>
                     <InputBase
                         sx={{ paddingLeft: '1rem', paddingRight: '1rem', width: '100%' }}
-                        startAdornment={
-                            <SearchIcon sx={{ marginRight: '0.5rem' }} color="primary" />
-                        }
+                        placeholder="Search..."
                     />
+                    <Button variant="contained" color="primary" sx={{ 
+                        borderRadius: '20px 20px 20px 20px', 
+                        color: '#333333', 
+                        textTransform: 'none',
+                        paddingTop: '4px', 
+                        paddingRight: '20px', 
+                        paddingBottom: '4px', 
+                        paddingLeft: '20px',
+                        boxShadow: 'none',
+                        '&:hover': {  // hover styles
+                            backgroundColor: '#333',  // some darker shade for example
+                            color: '#fff'  // making the text/icon white on hover
+                        }
+                        }}>
+                        Search
+                        <SearchIcon sx={{ marginLeft: '0.2rem', fontSize: '1.2rem'}} />
+                    </Button>
                 </Box>
 
                 {/* Icons + Login button on the right */}
@@ -56,7 +72,7 @@ export default function Header() {
                         component={NavLink} 
                         to={"/cart"}
                     >
-                        <Badge badgeContent={itemCount} color="primary">
+                        <Badge badgeContent={4} color="primary">
                             <ShoppingCartIcon sx={{ fontSize: '1.2rem'}}/>
                         </Badge>
                     </IconButton>

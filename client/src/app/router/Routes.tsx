@@ -6,6 +6,8 @@ import CartPage from "../../features/cart/CartPage";
 import FavoritePage from "../../features/favorite/FavoritePage";
 import ServerError from "../error/ServerError";
 import NotFound from "../error/NotFound";
+import CheckOutPage from "../../features/checkout/CheckOutPage";
+import Login from "../../features/login/Login";
 
 export const router = createBrowserRouter([
     {
@@ -19,6 +21,8 @@ export const router = createBrowserRouter([
             {path: 'favorite', element: <FavoritePage />},
             {path: 'server-error', element: <ServerError />},
             {path: 'not-found', element: <NotFound />},
+            {path: 'checkout', element: <CheckOutPage />},
+            {path: 'login', element: <Login />},
             {path: '*', element: <NotFound />}
         ]
     }
