@@ -12,7 +12,7 @@ import LoadingComponent from './LoadingComponent';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#F3A80A',
+      main: '#FDC54E',
       light: '#FEF9EE',
     },
     secondary: {

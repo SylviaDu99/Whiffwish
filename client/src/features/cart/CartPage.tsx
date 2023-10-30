@@ -1,4 +1,4 @@
-import { Box, Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, } from "@mui/material";
+import { Button, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, } from "@mui/material";
 import { Add, Delete, Remove } from "@mui/icons-material";
 import Header from "../../app/layout/Header";
 import { useStoreContext } from "../../app/context/StoreContext";
@@ -135,7 +135,7 @@ export default function CartPage() {
                                         variant="contained" 
                                         color="primary" 
                                         size="large"
-                                        sx = {{boxShadow: "0px 3px 10px rgba(0, 0, 0, 0)"}}
+                                        sx = {{boxShadow: "none", borderRadius:"16px"}}
                                     >
                                         Checkout
                                     </Button>

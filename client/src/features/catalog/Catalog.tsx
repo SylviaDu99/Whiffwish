@@ -5,6 +5,9 @@ import { useState, useEffect } from "react"
 import Header from "../../app/layout/Header";
 import agent from "../../app/api/agent";
 import LoadingComponent from "../../app/layout/LoadingComponent";
+import { Button, Grid } from "@mui/material";
+import CreateIcon from '@mui/icons-material/Create';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 
 export default function Catalog() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -22,8 +25,32 @@ export default function Catalog() {
         <>
             <Header />
             <Gallery />
-            
-            <ProductList products={products}/>
+            <Grid container spacing={3} marginLeft={1}>
+                <Grid item xs={2} marginTop={10}>
+                <Button 
+                    variant="contained" 
+                    color="primary" 
+                    fullWidth
+                    sx={{boxShadow:"none", borderRadius:"16px", color:"#333333"}}
+                    startIcon={<CreateIcon />}
+                >
+                    Create a post
+                </Button>
+                    <Button 
+                        variant="contained" 
+                        color="primary"
+                        fullWidth 
+                        style={{ marginTop: '15px' }}
+                        sx={{boxShadow:"none", borderRadius:"16px", color:"#333333"}}
+                        startIcon={<StorefrontIcon />}
+                    >
+                        Sell an item
+                    </Button>
+                </Grid>
+                <Grid item xs={10}>
+                    <ProductList products={products}/>
+                </Grid>
+            </Grid>
         
         </>
     )

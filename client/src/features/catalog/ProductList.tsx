@@ -13,7 +13,7 @@ export default function ProductList({ products }: Props) {
     });
 
     return (
-        <Box marginTop={10} marginLeft={30} >
+        <Box marginTop={10} >
             <Grid container spacing={3}>
                 {columns.map((columnProducts, colIndex) => (
                     <Grid item xs={2.3} key={colIndex}>
