@@ -1,10 +1,14 @@
-import { AppBar, Toolbar, Typography, InputBase, Button, IconButton, Box, Badge } from "@mui/material";
+import { AppBar, Toolbar, Typography, InputBase, Button, IconButton, Box, Badge, InputAdornment } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { NavLink } from "react-router-dom";
+import { useAppSelector } from "../store/configureStore";
 
 export default function Header() {
+    const {basket} = useAppSelector(state => state.cart);
+    const itemCount = basket?.items.reduce((acc, item) => acc + item.quantity, 0);
+
     return (
         <AppBar position='fixed' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>
             <Toolbar>
@@ -33,8 +37,13 @@ export default function Header() {
                     <InputBase
                         sx={{ paddingLeft: '1rem', paddingRight: '1rem', width: '100%' }}
                         placeholder="Search..."
+                        startAdornment={
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        }
                     />
-                    <Button variant="contained" color="primary" sx={{ 
+                    {/* <Button variant="contained" color="primary" sx={{ 
                         borderRadius: '20px 20px 20px 20px', 
                         color: '#333333', 
                         textTransform: 'none',
@@ -50,7 +59,7 @@ export default function Header() {
                         }}>
                         Search
                         <SearchIcon sx={{ marginLeft: '0.2rem', fontSize: '1.2rem'}} />
-                    </Button>
+                    </Button> */}
                 </Box>
 
                 {/* Icons + Login button on the right */}
@@ -68,12 +77,26 @@ export default function Header() {
                     <IconButton 
                         edge="end" 
                         color="secondary" 
-                        sx={{ marginRight: 2}}
+                        sx={{ marginRight: 2 }}
                         component={NavLink} 
                         to={"/cart"}
                     >
-                        <Badge badgeContent={4} color="primary">
-                            <ShoppingCartIcon sx={{ fontSize: '1.2rem'}}/>
+                        <Badge 
+                            badgeContent={itemCount} 
+                            color="primary"
+                            sx={{
+                                '.MuiBadge-badge': {
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    height: '1rem',
+                                    width: '1rem',
+                                    minWidth: '1rem',
+                                    fontSize: '0.75rem'
+                                }
+                            }}
+                        >
+                            <ShoppingCartIcon sx={{ fontSize: '1.2rem' }}/>
                         </Badge>
                     </IconButton>
 

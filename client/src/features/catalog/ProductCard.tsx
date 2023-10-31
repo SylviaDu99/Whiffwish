@@ -6,6 +6,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import agent from "../../app/api/agent";
 import { useStoreContext } from "../../app/context/StoreContext";
+import { useAppDispatch } from "../../app/store/configureStore";
+import { setBasket } from "../cart/cartSlice";
 
 interface Props {
     product: Product;
@@ -15,12 +17,12 @@ export default function ProductCard({product}: Props) {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
     const [isLoading, setLoading] = useState(false);
-    const {setBasket} = useStoreContext();
+    const dispatch = useAppDispatch();
 
     function handleAddToCart(productId: number) {
         setLoading(true);
         agent.Basket.addItem(productId)
-            .then(basket => setBasket(basket))
+            .then(basket => dispatch(setBasket(basket)))
             .catch(error => console.log(error))
             .finally(() => setLoading(false));
     }
