@@ -1,7 +1,7 @@
 namespace API.DTOs {
-    public class BasketDto {
+    public class CartDto {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public List<BasketItemDto> Items { get; set; } = new();
+        public List<CartItemDto> Items { get; set; } = new();
     }
 }

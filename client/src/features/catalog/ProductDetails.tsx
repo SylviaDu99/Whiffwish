@@ -8,11 +8,11 @@ import LoadingComponent from '../../app/layout/LoadingComponent';
 import { LoadingButton } from '@mui/lab';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
-import { addBasketItemAsync, removeBasketItemAsync} from '../cart/cartSlice';
+import { addCartItemAsync, removeCartItemAsync} from '../cart/cartSlice';
 import { fetchProductAsync, productSelectors } from './catalogSlice';
 
 export default function ProductDetails() {
-    const {basket, status} = useAppSelector(state => state.cart);
+    const {cart: basket, status} = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
     const { id } = useParams<{ id: string }>();
     const product = useAppSelector(state => productSelectors.selectById(state, id!));
@@ -35,10 +35,10 @@ export default function ProductDetails() {
         if (!product) return;
         if (!item || quantity > item.quantity) {
             const undatedQuantity = item ? quantity - item.quantity : quantity;
-            dispatch(addBasketItemAsync({productId: product?.id!, quantity: undatedQuantity}))
+            dispatch(addCartItemAsync({productId: product?.id!, quantity: undatedQuantity}))
         } else {
             const updatedQuantity = item.quantity - quantity;
-            dispatch(removeBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
+            dispatch(removeCartItemAsync({productId: product?.id!, quantity: updatedQuantity}))
         }
     }
 
@@ -117,7 +117,7 @@ export default function ProductDetails() {
                                         } }} />
                                 <LoadingButton 
                                     disabled={quantity === item?.quantity || !item && quantity === 0}
-                                    loading={status.includes('pendingAddItem'+product.id) || status.includes('pendingRemoveItem'+product.id)}
+                                    loading={status.includes('pending')}
                                     onClick={handleUpdateCart}
                                     variant="contained" 
                                     color="primary" 

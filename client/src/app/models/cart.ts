@@ -1,10 +1,10 @@
-export interface Basket {
+export interface Cart {
     id: number;
     userId: string;
-    items: BasketItem[];
+    items: CartItem[];
   }
   
-  export interface BasketItem {
+  export interface CartItem {
     productId: number;
     name: string;
     pictureUrl: string;

@@ -5,7 +5,7 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addBasketItemAsync} from "../cart/cartSlice";
+import { addCartItemAsync} from "../cart/cartSlice";
 
 interface Props {
     product: Product;
@@ -62,7 +62,7 @@ export default function ProductCard({product}: Props) {
                         <IconButton 
                             size="small" 
                             sx={{ padding: '0.5rem'}} 
-                            onClick={() => dispatch(addBasketItemAsync({productId: product.id, quantity: 1}))}>
+                            onClick={() => dispatch(addCartItemAsync({productId: product.id, quantity: 1}))}>
                             {status.includes('pendingAddItem'+product.id) ? <CircularProgress size={16} /> : <ShoppingCartIcon color='primary' sx={{ fontSize: '1rem'}} />}
                         </IconButton>
                         </Grid>

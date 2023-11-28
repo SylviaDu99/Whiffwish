@@ -6,8 +6,8 @@ import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
 
 export default function Header() {
-    const {basket} = useAppSelector(state => state.cart);
-    const itemCount = basket?.items.reduce((acc, item) => acc + item.quantity, 0);
+    const {cart} = useAppSelector(state => state.cart);
+    const itemCount = cart?.items.reduce((acc, item) => acc + item.quantity, 0);
 
     return (
         <AppBar position='fixed' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>

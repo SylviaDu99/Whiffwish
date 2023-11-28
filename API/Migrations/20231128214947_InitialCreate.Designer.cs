@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace API.Data.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    [Migration("20231027184953_BasketEntityAdded")]
-    partial class BasketEntityAdded
+    [Migration("20231128214947_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace API.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
-            modelBuilder.Entity("API.Entities.Basket", b =>
+            modelBuilder.Entity("API.Entities.Cart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,16 +30,16 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Baskets");
+                    b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("API.Entities.BasketItem", b =>
+            modelBuilder.Entity("API.Entities.CartItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BasketId")
+                    b.Property<int>("CartId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductId")
@@ -50,11 +50,11 @@ namespace API.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BasketId");
+                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketItems");
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>
@@ -89,11 +89,11 @@ namespace API.Data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("API.Entities.BasketItem", b =>
+            modelBuilder.Entity("API.Entities.CartItem", b =>
                 {
-                    b.HasOne("API.Entities.Basket", "Basket")
+                    b.HasOne("API.Entities.Cart", "Cart")
                         .WithMany("Items")
-                        .HasForeignKey("BasketId")
+                        .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -103,12 +103,12 @@ namespace API.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Basket");
+                    b.Navigation("Cart");
 
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("API.Entities.Basket", b =>
+            modelBuilder.Entity("API.Entities.Cart", b =>
                 {
                     b.Navigation("Items");
                 });

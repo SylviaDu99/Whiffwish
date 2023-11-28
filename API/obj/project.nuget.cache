@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9yTBc3b6FzgduTVMkTA3Xr+7y3VjkLhghxBSAgbBWGbq/BQi5Dsy8O7YpyuD5zKCDzCZIt0dsMhfMI4s/AcwuA==",
+  "dgSpecHash": "XHjhsaVoHYOgLCS6wqHQxxUnRKBUw/7bt47QAoJ8Dzwc/9pRhoC/kLzXQqsoTg3AOhBY2o2ELO+6v0DABRGdIw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\API\\API.csproj",
+  "projectFilePath": "C:\\Users\\gaosk\\OneDrive\\Documents\\git\\Whiffwish\\api\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gaosk\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\gaosk\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.12\\microsoft.aspnetcore.openapi.7.0.12.nupkg.sha512",

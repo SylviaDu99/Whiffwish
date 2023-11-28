@@ -4,15 +4,15 @@ import Header from "../../app/layout/Header";
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { addBasketItemAsync, removeBasketItemAsync } from "./cartSlice";
+import { addCartItemAsync, removeCartItemAsync } from "./cartSlice";
 
 export default function CartPage() {
-    const { basket, status } = useAppSelector(state => state.cart);
+    const { cart: cart, status } = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
 
     const deliveryFee = 999; //Todo: get from backend
 
-    if (!basket || basket.items.length === 0) return (
+    if (!cart || cart.items.length === 0) return (
         <>
             <Header />
             <div style={{ height: '68px' }}></div>
@@ -34,7 +34,7 @@ export default function CartPage() {
         </>
     )
 
-    const totalPrice = basket.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const totalPrice = cart.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
 
     return (
         <>
@@ -54,7 +54,7 @@ export default function CartPage() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {basket.items.map(item => (
+                            {cart.items.map(item => (
                                 <TableRow
                                     key={item.productId}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -69,13 +69,13 @@ export default function CartPage() {
                                     <TableCell align="center">
                                         <LoadingButton
                                             loading={status === 'pendingRemoveItem' + item.productId + "remove"}
-                                            onClick={() => dispatch(removeBasketItemAsync({productId: item.productId, quantity: 1, name: "remove"}))}>
+                                            onClick={() => dispatch(removeCartItemAsync({productId: item.productId, quantity: 1, name: "remove"}))}>
                                             <Remove />
                                         </LoadingButton>
                                         {item.quantity}
                                         <LoadingButton
                                             loading={status === 'pendingAddItem' + item.productId}
-                                            onClick={() => dispatch(addBasketItemAsync({productId: item.productId, quantity: 1}))}>
+                                            onClick={() => dispatch(addCartItemAsync({productId: item.productId, quantity: 1}))}>
                                             <Add />
                                         </LoadingButton>
                                     </TableCell>
@@ -83,7 +83,7 @@ export default function CartPage() {
                                     <TableCell align="center">
                                         <LoadingButton
                                             loading={status === 'pendingRemoveItem' + item.productId + "delete"}
-                                            onClick={() => dispatch(removeBasketItemAsync({productId: item.productId, quantity: item.quantity, name: "delete"}))}
+                                            onClick={() => dispatch(removeCartItemAsync({productId: item.productId, quantity: item.quantity, name: "delete"}))}
                                         >
                                             <Delete />
                                         </LoadingButton>

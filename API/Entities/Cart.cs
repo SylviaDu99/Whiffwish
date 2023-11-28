@@ -1,9 +1,9 @@
 namespace API.Entities
 {
-    public class Basket {
+    public class Cart {
         public int Id { get; set; }
         public string UserId { get; set; }
-        public List<BasketItem> Items { get; set; } = new();
+        public List<CartItem> Items { get; set; } = new();
 
         public void AddItem(Product product, int quantity)
         {
@@ -15,7 +15,7 @@ namespace API.Entities
             }
             else
             {
-                Items.Add(new BasketItem
+                Items.Add(new CartItem
                 {
                     ProductId = product.Id,
                     Quantity = quantity,

@@ -8,7 +8,7 @@ import { getCookie } from '../util/util';
 import agent from '../api/agent';
 import LoadingComponent from './LoadingComponent';
 import { useAppDispatch } from '../store/configureStore';
-import { setBasket } from '../../features/cart/cartSlice';
+import { setCart } from '../../features/cart/cartSlice';
 
 const theme = createTheme({
   palette: {
@@ -32,14 +32,14 @@ function App() {
   useEffect(() => {
     const userId = getCookie('userId');
     if (userId) {
-      agent.Basket.get()
-        .then(response => dispatch(setBasket(response)))
+      agent.Cart.get()
+        .then(response => dispatch(setCart(response)))
         .catch(error => console.log(error))
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
     }
-  },[setBasket])
+  },[setCart])
 
   if (loading) return <LoadingComponent message="Initializing..." />
 
