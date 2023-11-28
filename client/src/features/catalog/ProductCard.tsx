@@ -4,10 +4,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import agent from "../../app/api/agent";
-import { useStoreContext } from "../../app/context/StoreContext";
-import { useAppDispatch } from "../../app/store/configureStore";
-import { setBasket } from "../cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
+import { addBasketItemAsync} from "../cart/cartSlice";
 
 interface Props {
     product: Product;
@@ -16,16 +14,8 @@ interface Props {
 export default function ProductCard({product}: Props) {
     const [isHovered, setIsHovered] = useState(false);
     const [isClicked, setIsClicked] = useState(false);
-    const [isLoading, setLoading] = useState(false);
+    const {status} = useAppSelector(state => state.cart);
     const dispatch = useAppDispatch();
-
-    function handleAddToCart(productId: number) {
-        setLoading(true);
-        agent.Basket.addItem(productId)
-            .then(basket => dispatch(setBasket(basket)))
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false));
-    }
 
     return (
             <Card sx={{ borderRadius: '16px'}} elevation={0} >
@@ -72,8 +62,8 @@ export default function ProductCard({product}: Props) {
                         <IconButton 
                             size="small" 
                             sx={{ padding: '0.5rem'}} 
-                            onClick={() => handleAddToCart(product.id)}>
-                            {isLoading ? <CircularProgress size={24} /> : <ShoppingCartIcon color='primary' sx={{ fontSize: '1rem'}} />}
+                            onClick={() => dispatch(addBasketItemAsync({productId: product.id, quantity: 1}))}>
+                            {status.includes('pendingAddItem'+product.id) ? <CircularProgress size={16} /> : <ShoppingCartIcon color='primary' sx={{ fontSize: '1rem'}} />}
                         </IconButton>
                         </Grid>
                     </Grid>

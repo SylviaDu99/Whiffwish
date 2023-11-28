@@ -3,30 +3,27 @@ import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; 
-import { Product } from '../../app/models/product';
-import agent from '../../app/api/agent';
 import NotFound from '../../app/error/NotFound';
 import LoadingComponent from '../../app/layout/LoadingComponent';
-import { useStoreContext } from '../../app/context/StoreContext';
 import { LoadingButton } from '@mui/lab';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { useAppDispatch, useAppSelector } from '../../app/store/configureStore';
+import { addBasketItemAsync, removeBasketItemAsync} from '../cart/cartSlice';
+import { fetchProductAsync, productSelectors } from './catalogSlice';
 
 export default function ProductDetails() {
-    const {basket, setBasket, removeItem} = useStoreContext();
+    const {basket, status} = useAppSelector(state => state.cart);
+    const dispatch = useAppDispatch();
     const { id } = useParams<{ id: string }>();
-    const [product, setProduct] = useState<Product | null>(null);
-    const [loading, setLoading] = useState(true);
+    const product = useAppSelector(state => productSelectors.selectById(state, id!));
+    const {status: productStatus} = useAppSelector(state => state.catalog);
     const navigate = useNavigate(); // Get the navigate function
     const [quantity, setQuantity] = useState(0); // Default quantity is 1
-    const [submitting, setSubmitting] = useState(false); // Default submitting is false
     const item = basket?.items.find(item => item.productId === product?.id);
     
     useEffect(() => {
         if (item) setQuantity(item.quantity);
-        id && agent.Catalog.details(parseInt(id))
-            .then(response => setProduct(response))
-            .catch(error => console.log(error))
-            .finally(() => setLoading(false));
+        if (!product && id) dispatch(fetchProductAsync(parseInt(id)));
     }, [id, item]);
     
     function handleQuantityChange(event: any) {
@@ -36,23 +33,16 @@ export default function ProductDetails() {
 
     function handleUpdateCart() {
         if (!product) return;
-        setSubmitting(true);
         if (!item || quantity > item.quantity) {
             const undatedQuantity = item ? quantity - item.quantity : quantity;
-            agent.Basket.addItem(product.id!, undatedQuantity)
-                .then(basket => setBasket(basket))
-                .catch(error => console.log(error))
-                .finally(() => setSubmitting(false));
+            dispatch(addBasketItemAsync({productId: product?.id!, quantity: undatedQuantity}))
         } else {
             const updatedQuantity = item.quantity - quantity;
-            agent.Basket.removeItem(product.id!, item.quantity - quantity)
-                .then(() => removeItem(product.id!, updatedQuantity))
-                .catch(error => console.log(error))
-                .finally(() => setSubmitting(false));
+            dispatch(removeBasketItemAsync({productId: product?.id!, quantity: updatedQuantity}))
         }
     }
 
-    if (loading) return <LoadingComponent message='Fetching the post...'/>
+    if (productStatus.includes('pending')) return <LoadingComponent message='Fetching the post...'/>
     if (!product) return <NotFound />
 
     return (
@@ -127,7 +117,7 @@ export default function ProductDetails() {
                                         } }} />
                                 <LoadingButton 
                                     disabled={quantity === item?.quantity || !item && quantity === 0}
-                                    loading={submitting}
+                                    loading={status.includes('pendingAddItem'+product.id) || status.includes('pendingRemoveItem'+product.id)}
                                     onClick={handleUpdateCart}
                                     variant="contained" 
                                     color="primary" 

@@ -18,6 +18,12 @@ export default function Header() {
                             sx={{ marginRight: 2, textDecoration: "none"}}>
                     Whiffwish
                 </Typography>
+                {/* <NavLink to={"/catalog"}>
+                    <img src="../../../public/logo.png" alt="Whiffwish" 
+                        style={{ height: '2rem', marginRight: '1rem' }}
+                    />
+                </NavLink> */}
+
 
                 {/* Search bar in the center */}
                 <Box sx={{ 
