@@ -24,8 +24,8 @@ export const router = createBrowserRouter([
             {path: 'not-found', element: <NotFound />},
             {path: 'checkout', element: <CheckOutPage />},
             {path: 'login', element: <Login />},
+            {path: 'search_result', element: <SearchResult/>},
             {path: '*', element: <NotFound />},
-            {path: 'search-result', element: <SearchResult />}
         ]
     }
 ])

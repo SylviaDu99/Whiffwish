@@ -1,37 +1,48 @@
 import ProductList from "./ProductList"
-import { useEffect } from "react"
 import Header from "../../app/layout/Header";
-import agent from "../../app/api/agent";
-import LoadingComponent from "../../app/layout/LoadingComponent";
 import { Grid } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { fetchProductsAsync, productSelectors } from "./catalogSlice";
 import SideBar from "../../app/layout/SideBar";
+import { useEffect, useState } from "react";
+import agent from "../../app/api/agent";
+import { useLocation } from "react-router-dom";
 
-export default function Catalog() {
-    const products = useAppSelector(productSelectors.selectAll)
-    const dispatch = useAppDispatch();
-    const {productsLoaded, status} = useAppSelector(state => state.catalog);
+
+export default function SearchResult() {
+    const [products, setProducts] = useState([]);
+    const location = useLocation();
 
     useEffect(() => {
-      agent.Catalog.list()
-        if(!productsLoaded) dispatch(fetchProductsAsync())
-        
-    },[productsLoaded, dispatch])
+        const params = new URLSearchParams();
+        const useQuery = () => {
+            return new URLSearchParams(location.search);
+        };
 
-    if (status.includes('pending')) return <LoadingComponent message="Fetching Posts..."/>
+        const query = useQuery();
+        const searchTerm = query.get('keyword')
+
+        params.append('pageNumber', '1');
+        params.append('pageSize', '10');
+        params.append('orderBy', 'name');
+        if (searchTerm) params.append('searchTerm', searchTerm);
+        agent.Catalog.list(params).then((response: any) => {
+            setProducts(response);
+        });
+    }, [location.search]);
+
     return (
         <>
             <Header />
-            <Grid container spacing={3} marginLeft={1}>
-                <Grid item xs={2} marginTop={10}>
+            <Grid container spacing={3} marginLeft={1} marginTop={10}>
+                <Grid item xs={2} marginTop={-1}>
                     <SideBar />
                 </Grid>
-                <Grid item xs={10}>
-                    <ProductList products={products}/>
+
+                <Grid item xs={10} spacing={1}>
+
+                    {/* Product List */}
+                    <ProductList products={products} />
                 </Grid>
             </Grid>
-        
         </>
     )
 }

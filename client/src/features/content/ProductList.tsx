@@ -7,13 +7,17 @@ interface Props {
 }
 
 export default function ProductList({ products }: Props) {
+    if (!Array.isArray(products) || products.length === 0) {
+        return <Box>No products available.</Box>;
+    }
+
     const columns: Product[][] = [[], [], [], [], []];
     products.forEach((product, index) => {
         columns[index % 5].push(product);
     });
 
     return (
-        <Box marginTop={10} >
+        <Box marginTop={0} >
             <Grid container spacing={3}>
                 {columns.map((columnProducts, colIndex) => (
                     <Grid item xs={2.3} key={colIndex}>

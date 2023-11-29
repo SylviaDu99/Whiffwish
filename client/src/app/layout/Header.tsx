@@ -2,12 +2,31 @@ import { AppBar, Toolbar, Typography, InputBase, Button, IconButton, Box, Badge,
 import SearchIcon from '@mui/icons-material/Search';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../store/configureStore";
+import { useEffect, useState } from "react";
 
 export default function Header() {
     const {cart} = useAppSelector(state => state.cart);
     const itemCount = cart?.items.reduce((acc, item) => acc + item.quantity, 0);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Function to parse query parameters
+    const useQuery = () => new URLSearchParams(location.search);
+    const query = useQuery();
+    const [searchTerm, setSearchTerm] = useState(query.get('keyword') || '');
+
+    useEffect(() => {
+        // Update searchTerm from URL when location changes
+        setSearchTerm(query.get('keyword') || '');
+    }, [location]);
+
+    const handleSearch = (event: React.KeyboardEvent<HTMLDivElement> | React.MouseEvent) => {
+        if ((event.type === 'click' || (event as React.KeyboardEvent).key === 'Enter') && searchTerm.trim()) {
+            navigate(`/search_result?keyword=${encodeURIComponent(searchTerm)}`);
+        }
+    };
 
     return (
         <AppBar position='fixed' elevation={0} color="transparent" sx={{ backgroundColor: 'white', mb: 4 }}>
@@ -28,7 +47,7 @@ export default function Header() {
                     display: 'flex', 
                     alignItems: 'center',
                     maxWidth: '400px',
-                    margin: '0 auto', // centers the box in the available space
+                    margin: '0 auto',
                     paddingTop: '4px', 
                     paddingRight: '4px', 
                     paddingBottom: '4px',
@@ -37,12 +56,18 @@ export default function Header() {
                     <InputBase
                         sx={{ paddingLeft: '1rem', paddingRight: '1rem', width: '100%' }}
                         placeholder="Search..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onKeyPress={handleSearch}
                         endAdornment={
                             <InputAdornment position="end">
-                                <SearchIcon />
+                                <IconButton onClick={handleSearch}>
+                                    <SearchIcon />
+                                </IconButton>
                             </InputAdornment>
                         }
                     />
+
 
                 </Box>
 

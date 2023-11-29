@@ -17,8 +17,8 @@ export default function ProductDetails() {
     const { id } = useParams<{ id: string }>();
     const product = useAppSelector(state => productSelectors.selectById(state, id!));
     const { status: productStatus } = useAppSelector(state => state.catalog);
-    const navigate = useNavigate(); // Get the navigate function
-    const [quantity, setQuantity] = useState(0); // Default quantity is 1
+    const navigate = useNavigate(); 
+    const [quantity, setQuantity] = useState(0); 
     const item = basket?.items.find(item => item.productId === product?.id);
 
     useEffect(() => {
