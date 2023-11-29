@@ -33,7 +33,7 @@ export default function SearchResult() {
         <>
             <Header />
             <Grid container spacing={3} marginLeft={1} marginTop={10}>
-                <Grid item xs={2} marginTop={-1}>
+                <Grid item xs={2} >
                     <SideBar />
                 </Grid>
 

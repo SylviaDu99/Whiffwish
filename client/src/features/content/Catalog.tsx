@@ -3,15 +3,16 @@ import ProductList from "./ProductList"
 import { useEffect } from "react"
 import Header from "../../app/layout/Header";
 import LoadingComponent from "../../app/layout/LoadingComponent";
-import { Button, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import { fetchFilters, fetchProductsAsync, productSelectors } from "./catalogSlice";
+import { fetchFilters, fetchProductsAsync, productSelectors, setProductParams } from "./catalogSlice";
 import SideBar from "../../app/layout/SideBar";
+import TagButtonGroup from "../../app/components/TagButtonGroup";
 
 export default function Catalog() {
     const products = useAppSelector(productSelectors.selectAll)
     const dispatch = useAppDispatch();
-    const { productsLoaded, status, filtersLoaded, types, brands } = useAppSelector(state => state.catalog);
+    const { productsLoaded, status, filtersLoaded, types} = useAppSelector(state => state.catalog);
 
     useEffect(() => {
         if (!productsLoaded) dispatch(fetchProductsAsync())
@@ -35,19 +36,10 @@ export default function Catalog() {
                 <Grid item xs={10}>
                     {/* Tag Buttons */}
                     <Grid container spacing={1} marginBottom={2}>
-                        <Grid item>
-                            <Button variant="text">Recommended</Button>
-                        </Grid>
-                        {types.map((type) => (
-                            <Grid item>
-                                <Button variant="text">{type}</Button>
-                            </Grid>
-                        ))}
-                        {brands.map((brand) => (
-                            <Grid item>
-                                <Button variant="text">{brand}</Button>
-                            </Grid>
-                        ))}
+                        <TagButtonGroup
+                            options={types}
+                            onClick={(type) => dispatch(setProductParams({ types: type }))}
+                        />
                     </Grid>
                     {/* Product List */}
                     <ProductList products={products} />
