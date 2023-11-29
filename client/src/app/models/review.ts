@@ -10,4 +10,5 @@ export interface Post {
     brand?: string;
     authorId?: number;
     tag?: string[];
+    comments?: Comment[];
 }

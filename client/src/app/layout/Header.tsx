@@ -16,14 +16,8 @@ export default function Header() {
                 <Typography variant='h6' color="primary" 
                             component={NavLink} to={"/catalog"}
                             sx={{ marginRight: 2, textDecoration: "none"}}>
-                    Whiffwish
+                    WhiffWish
                 </Typography>
-                {/* <NavLink to={"/catalog"}>
-                    <img src="../../../public/logo.png" alt="Whiffwish" 
-                        style={{ height: '2rem', marginRight: '1rem' }}
-                    />
-                </NavLink> */}
-
 
                 {/* Search bar in the center */}
                 <Box sx={{ 
@@ -43,29 +37,13 @@ export default function Header() {
                     <InputBase
                         sx={{ paddingLeft: '1rem', paddingRight: '1rem', width: '100%' }}
                         placeholder="Search..."
-                        startAdornment={
-                            <InputAdornment position="start">
+                        endAdornment={
+                            <InputAdornment position="end">
                                 <SearchIcon />
                             </InputAdornment>
                         }
                     />
-                    {/* <Button variant="contained" color="primary" sx={{ 
-                        borderRadius: '20px 20px 20px 20px', 
-                        color: '#333333', 
-                        textTransform: 'none',
-                        paddingTop: '4px', 
-                        paddingRight: '20px', 
-                        paddingBottom: '4px', 
-                        paddingLeft: '20px',
-                        boxShadow: 'none',
-                        '&:hover': {  // hover styles
-                            backgroundColor: '#333',  // some darker shade for example
-                            color: '#fff'  // making the text/icon white on hover
-                        }
-                        }}>
-                        Search
-                        <SearchIcon sx={{ marginLeft: '0.2rem', fontSize: '1.2rem'}} />
-                    </Button> */}
+
                 </Box>
 
                 {/* Icons + Login button on the right */}

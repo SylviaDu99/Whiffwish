@@ -37,5 +37,18 @@ namespace API.Controllers
             if (product == null) return NotFound();
             return product;
         }
+
+        [HttpGet("filters")]
+        public async Task<ActionResult<Dictionary<string, List<string>>>> GetFilters()
+        {
+            var brands = await _context.Products.Select(p => p.Brand).Distinct().ToListAsync();
+            var types = await _context.Products.Select(p => p.Type).Distinct().ToListAsync();
+            var filters = new Dictionary<string, List<string>>
+            {
+                ["brands"] = brands,
+                ["types"] = types
+            };
+            return filters;
+        }
     }
 }
