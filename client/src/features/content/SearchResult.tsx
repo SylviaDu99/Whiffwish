@@ -38,7 +38,6 @@ export default function SearchResult() {
                 </Grid>
 
                 <Grid item xs={10} spacing={1}>
-
                     {/* Product List */}
                     <ProductList products={products} />
                 </Grid>

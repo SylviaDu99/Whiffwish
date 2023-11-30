@@ -2,11 +2,12 @@ import { createAsyncThunk, createEntityAdapter, createSlice } from '@reduxjs/too
 import { Product, ProductParams } from '../../app/models/product';
 import agent from '../../app/api/agent';
 import { RootState } from '../../app/store/configureStore';
+import { MetaData } from './../../app/models/pagination';
 
 function initParams() {
     return {
         pageNumber: 1,
-        pageSize: 10,
+        pageSize: 5,
         orderBy: 'name',
     }
 }
@@ -18,6 +19,8 @@ interface CatalogState {
     types: string[];
     brands: string[];
     productParams: ProductParams;
+    metaData?: MetaData | null;
+    isPageAppend: boolean;
 }
 
 const productsAdapter = createEntityAdapter<Product>();
@@ -39,15 +42,16 @@ function getAxiosParams(productParams: ProductParams) {
 export const fetchProductsAsync = createAsyncThunk<Product[], void, { state: RootState }>(
     'catalog/fetchProductsAsync',
     async (_, thunkAPI) => {
+        const params = getAxiosParams(thunkAPI.getState().catalog.productParams); 
         try {
-            const params = getAxiosParams(thunkAPI.getState().catalog.productParams);   
-            return await agent.Catalog.list(params);
+            const response = await agent.Catalog.list(params);
+            thunkAPI.dispatch(setMetaData(response.metaData));
+            return response.items;
         } catch (error: any) {
             return thunkAPI.rejectWithValue({ error: error.data });
         }
     }
 );
-
 
 export const fetchProductAsync = createAsyncThunk<Product, number>(
     'catalog/fetchProductAsync',
@@ -80,11 +84,22 @@ export const catalogSlice = createSlice({
         types: [],
         brands: [],
         productParams: initParams(),
+        metaData: null,
+        isPageAppend: false,
     }),
     reducers: {
         setProductParams: (state, action) => {
             state.productsLoaded = false;
+            state.productParams = { ...state.productParams, ...action.payload, pageNumber:1 };
+            state.isPageAppend = false;
+        },
+        setMetaData: (state, action) => {
+            state.metaData = action.payload;
+        },
+        setPageNumber: (state, action) => {
+            state.productsLoaded = false;
             state.productParams = { ...state.productParams, ...action.payload };
+            state.isPageAppend = true;
         },
         resetProductParams: (state) => {
             state.productsLoaded = false;
@@ -96,15 +111,20 @@ export const catalogSlice = createSlice({
             state.status = 'pendingFetchProducts';
         })
         builder.addCase(fetchProductsAsync.fulfilled, (state, action) => {
-            productsAdapter.setAll(state, action.payload);
+            if (state.isPageAppend) {
+                productsAdapter.upsertMany(state, action.payload);
+            } else {
+                productsAdapter.setAll(state, action.payload);
+            }
             state.productsLoaded = true;
             state.status = 'idle';
+            state.isPageAppend = false;
         })
         builder.addCase(fetchProductsAsync.rejected, (state) => {
             state.status = 'idle';
         })
         builder.addCase(fetchProductAsync.pending, (state) => {
-            state.status = 'pendingFecthProduct';
+            state.status = 'pendingFetchProduct';
         })
         builder.addCase(fetchProductAsync.fulfilled, (state, action) => {
             productsAdapter.upsertOne(state, action.payload);
@@ -131,4 +151,4 @@ export const catalogSlice = createSlice({
 })
 
 export const productSelectors = productsAdapter.getSelectors((state: RootState) => state.catalog);
-export const { setProductParams, resetProductParams } = catalogSlice.actions;
+export const { setProductParams, resetProductParams, setMetaData, setPageNumber } = catalogSlice.actions;
