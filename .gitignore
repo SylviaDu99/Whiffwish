@@ -31,6 +31,20 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+API/[Dd]ebug/
+API/[Dd]ebugPublic/
+API/[Rr]elease/
+API/[Rr]eleases/
+API/x64/
+API/x86/
+API/[Ww][Ii][Nn]32/
+API/[Aa][Rr][Mm]/
+API/[Aa][Rr][Mm]64/
+API/bld/
+API/[Bb]in/
+API/[Oo]bj/
+API/[Ll]og/
+API/[Ll]ogs/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -481,3 +495,6 @@ $RECYCLE.BIN/
 !.vscode/launch.json
 !.vscode/extensions.json
 API/bin/Debug/net7.0/appsettings.json
+
+# Ignore Jetbrains IDE settings
+.idea
