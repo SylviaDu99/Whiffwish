@@ -9,6 +9,7 @@ import NotFound from "../error/NotFound";
 import CheckOutPage from "../../features/checkout/CheckOutPage";
 import Login from "../../features/login/Login";
 import SearchResult from "../../features/content/SearchResult";
+import Signup from "../../features/signup/SignUp"
 
 export const router = createBrowserRouter([
     {
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
             {path: 'checkout', element: <CheckOutPage />},
             {path: 'login', element: <Login />},
             {path: 'search_result', element: <SearchResult/>},
+            {path: 'signup', element: <Signup />},
             {path: '*', element: <NotFound />},
         ]
     }

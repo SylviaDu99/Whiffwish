@@ -40,7 +40,7 @@ const defaultTheme = createTheme({
   });
   
 
-export default function SignIn() {
+export default function LogIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -63,7 +63,7 @@ export default function SignIn() {
           }}
         >
           <Typography component="h1" variant="h5">
-            Sign in
+            Log In
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -97,7 +97,7 @@ export default function SignIn() {
               sx={{ mt: 3, mb: 2, boxShadow:"none", borderRadius:"16px"}}
               color='primary'
             >
-              Sign In
+              Log In
             </Button>
             <Grid container>
               <Grid item xs>
@@ -106,7 +106,8 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2" underline="none">
+                {/* Link to Signup page */}
+                <Link href="../signup" variant="body2" underline="none">
                   Sign Up
                 </Link>
               </Grid>
