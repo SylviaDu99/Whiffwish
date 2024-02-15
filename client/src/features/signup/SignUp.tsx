@@ -113,6 +113,7 @@ const SignUp: React.FC = () => {
                             value={formData.confirmPassword}
                             onChange={handleChange}
                             error={!!passwordError}
+                            helperText={passwordError}
                         />
                         <Button
                             type="submit"
