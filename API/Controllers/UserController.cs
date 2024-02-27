@@ -3,37 +3,79 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using API.Services;
 
 namespace API.Controllers {
-    public class UserController: BaseApiController {
-        /*
-        [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(UserDto userDto)
-        {
-            var result = await _authService.RegisterAsync(userDto);
+    public class UserController: BaseApiController
+    {
+        private readonly IUserService _userService;
 
-            if (!result.Success)
+        public UserController(IUserService userService)
+        {
+            _userService = userService;
+        }
+        
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> Register(SignupDto signupDto)
+        {
+            if (!ModelState.IsValid)
             {
-                return BadRequest(result.Message);
+                return BadRequest(ModelState);
             }
 
-            return Ok(result.Data);
+            // Check if the user already exists
+            var userExists = await _userService.UserExists(signupDto.Email);
+            if (userExists)
+            {
+                return Conflict("User with this email already exists.");
+            }
+
+            // Hash the password before saving it to the database
+            string hashedPassword = PasswordHasher.HashPassword(signupDto.Password);
+
+            // Create a new user entity
+            var newUser = new User
+            {
+                UserId = signupDto.UserId,
+                Email = signupDto.Email,
+                PasswordHash = hashedPassword,
+                CreatedAt = signupDto.CreatedAt
+            };
+
+            // Save the new user to the database
+            CreateUserInDatabase(newUser);
+
+            // Optionally, you can return some data or a success message
+            return Ok("User signed up successfully.");
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(UserDto userDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var result = await _authService.LoginAsync(userLoginDto);
-
-            if (!result.Success)
+            if (!ModelState.IsValid)
             {
-                return BadRequest(result.Message);
+                return BadRequest(ModelState);
             }
 
-            return Ok(result.Data);
-        }
+            // Retrieve the user from the database based on the provided email
+            var user = await _userService.GetUserByEmail(loginDto.Email);
 
+            // Check if the user exists
+            if (user == null)
+            {
+                return NotFound("User not found.");
+            }
+
+            // Verify the provided password against the hashed password stored in the database
+            if (!PasswordHasher.VerifyPassword(user.PasswordHash, loginDto.Password))
+            {
+                return Unauthorized("Invalid email or password.");
+            }
+            var userDto = new UserDto(user);
+            return Ok(userDto);
+        }
+        
+        /*
         [HttpGet("profile")]
         public async Task<ActionResult<UserDto>> GetUserProfile()
         {

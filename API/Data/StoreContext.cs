@@ -11,7 +11,12 @@ namespace API.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<CartItem> Items { get; set; }
+        public DbSet<CartItem> Items { get; set; } 
+        
+        /*
+         public DbSet<Order> Orders { get; set; }
+         public DbSet<OrderItem> Items { get; set; }
+         */
         
         /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)

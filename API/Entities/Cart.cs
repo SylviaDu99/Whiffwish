@@ -23,8 +23,8 @@ namespace API.Entities
             }
         }
 
-        public void RemoveItem(int ProductId, int quantity) {
-            var item = Items.FirstOrDefault(item => item.ProductId == ProductId);
+        public void RemoveItem(int productId, int quantity) {
+            var item = Items.FirstOrDefault(item => item.ProductId == productId);
             if (item != null) {
                 if (item.Quantity > quantity) {
                     item.Quantity -= quantity;

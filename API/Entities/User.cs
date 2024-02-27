@@ -9,7 +9,23 @@
         public DateTime CreatedAt { get; set; }
         
         // navigation property
-        public List<CartItem> Items { get; set; }
+        public Cart Cart { get; set; } = new Cart();
+        
+        
+        public void AddItemToCart(Product product, int quantity)
+        {
+            Cart.AddItem(product, quantity);
+        }
+
+        public void RemoveItemFromCart(int productId, int quantity)
+        {
+            Cart.RemoveItem(productId, quantity);
+        }
+        
+        
+        /*
+         public StoreContext<Order> Orders { get; set; } = new List
+         */
     }
 }
 
